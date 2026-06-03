@@ -29,6 +29,18 @@ export default function OtpVerify({ email, onVerified, onBack }: Props) {
     }
   }
 
+  function handlePaste(e: React.ClipboardEvent) {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\s/g, "").slice(0, 8);
+    const next = [...otp];
+    for (let i = 0; i < pasted.length; i++) {
+      next[i] = pasted[i];
+    }
+    setOtp(next);
+    const focusIdx = Math.min(pasted.length, 7);
+    inputs.current[focusIdx]?.focus();
+  }
+
   async function handleVerify() {
     const token = otp.join("").trim();
     if (token.length < 8) return;
@@ -78,6 +90,7 @@ export default function OtpVerify({ email, onVerified, onBack }: Props) {
             value={val}
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
+            onPaste={handlePaste}
             className="w-11 h-12 text-center text-xl font-bold border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-400 transition-colors"
           />
         ))}

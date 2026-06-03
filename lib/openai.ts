@@ -1,10 +1,10 @@
 import OpenAI from "openai";
-import { SYSTEM_PROMPT, USER_PROMPT } from "./prompts";
+import { SYSTEM_PROMPT, buildUserPrompt } from "./prompts";
 import type { AnalyzeResult } from "@/types";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-export async function analyzePhoto(imageUrl: string): Promise<AnalyzeResult> {
+export async function analyzePhoto(imageUrl: string, cuisineFilter = "Semua"): Promise<AnalyzeResult> {
   const response = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
@@ -13,7 +13,7 @@ export async function analyzePhoto(imageUrl: string): Promise<AnalyzeResult> {
         role: "user",
         content: [
           { type: "image_url", image_url: { url: imageUrl } },
-          { type: "text", text: USER_PROMPT },
+          { type: "text", text: buildUserPrompt(cuisineFilter) },
         ],
       },
     ],

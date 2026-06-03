@@ -8,10 +8,12 @@ export interface RecipeIngredient {
   name: string;
   fromPhoto: boolean;
   amount: string;
+  category?: string;
 }
 
 export interface Recipe {
   name: string;
+  cuisine?: string;
   cookingTime: string;
   difficulty: "easy" | "medium" | "hard";
   ingredients: RecipeIngredient[];
@@ -28,5 +30,18 @@ export interface UserAccess {
   canScan: boolean;
   isPaid: boolean;
   scanCount: number;
+  paidBalance: number;
+  scansRemaining: number;
   freeLimit: number;
+  scansPerPurchase: number;
+}
+
+export interface HistoryItem {
+  id: string;
+  user_email: string;
+  image_url: string;
+  ingredients: Ingredient[];
+  recipes: Recipe[];
+  cuisine_filter: string;
+  created_at: string;
 }

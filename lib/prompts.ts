@@ -1,6 +1,11 @@
 export const SYSTEM_PROMPT = `You are a professional chef assistant. Analyze ingredient photos and suggest practical recipes. Return ONLY valid JSON with no markdown or extra text.`;
 
-export const USER_PROMPT = `Analyze this photo and return a JSON object with EXACTLY this structure:
+export function buildUserPrompt(cuisineFilter = "Semua") {
+  const cuisineInstruction = cuisineFilter !== "Semua"
+    ? `IMPORTANT: Only suggest ${cuisineFilter} cuisine recipes.`
+    : "You may suggest any cuisine type.";
+
+  return `Analyze this photo and return a JSON object with EXACTLY this structure:
 {
   "ingredients": [
     { "name": "string", "category": "vegetable|protein|dairy|grain|other", "confidence": "high|medium|low" }
@@ -8,10 +13,11 @@ export const USER_PROMPT = `Analyze this photo and return a JSON object with EXA
   "recipes": [
     {
       "name": "string",
+      "cuisine": "string (e.g. Indonesian, Western, Chinese)",
       "cookingTime": "string",
       "difficulty": "easy|medium|hard",
       "ingredients": [
-        { "name": "string", "fromPhoto": true, "amount": "string" }
+        { "name": "string", "fromPhoto": true, "amount": "string", "category": "vegetable|protein|dairy|grain|spice|other" }
       ],
       "steps": ["step 1...", "step 2..."],
       "tip": "string"
@@ -25,4 +31,6 @@ Rules:
 - Prioritize recipes under 30 minutes
 - Use as many photo ingredients as possible
 - Max 6 steps per recipe
-- Respond in Bahasa Indonesia`;
+- Respond in Bahasa Indonesia
+- ${cuisineInstruction}`;
+}

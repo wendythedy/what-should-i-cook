@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function OtpVerify({ email, onVerified, onBack }: Props) {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [resending, setResending] = useState(false);
@@ -20,7 +20,7 @@ export default function OtpVerify({ email, onVerified, onBack }: Props) {
     const next = [...otp];
     next[i] = val;
     setOtp(next);
-    if (val && i < 5) inputs.current[i + 1]?.focus();
+    if (val && i < 7) inputs.current[i + 1]?.focus();
   }
 
   function handleKeyDown(i: number, e: React.KeyboardEvent) {
@@ -31,7 +31,7 @@ export default function OtpVerify({ email, onVerified, onBack }: Props) {
 
   async function handleVerify() {
     const token = otp.join("").trim();
-    if (token.length < 6) return;
+    if (token.length < 8) return;
 
     setLoading(true);
     setError("");
@@ -64,7 +64,7 @@ export default function OtpVerify({ email, onVerified, onBack }: Props) {
         <div className="text-4xl mb-2">📧</div>
         <h2 className="font-bold text-gray-800 text-lg">Cek emailmu</h2>
         <p className="text-gray-500 text-sm mt-1">
-          Kode 6 digit dikirim ke <span className="font-medium text-gray-700">{email}</span>
+          Kode 8 digit dikirim ke <span className="font-medium text-gray-700">{email}</span>
         </p>
       </div>
 
@@ -91,7 +91,7 @@ export default function OtpVerify({ email, onVerified, onBack }: Props) {
 
       <button
         onClick={handleVerify}
-        disabled={otp.join("").length < 6 || loading}
+        disabled={otp.join("").length < 8 || loading}
         className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-200 disabled:text-gray-400 text-white font-semibold py-3 rounded-xl transition-colors"
       >
         {loading ? "Memverifikasi..." : "✅ Verifikasi"}

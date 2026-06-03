@@ -99,6 +99,16 @@ export default function Home() {
       .then(setAccess);
   }
 
+  async function handleSignOut() {
+    await supabaseClient.auth.signOut();
+    setStep("email");
+    setEmail("");
+    setToken("");
+    setAccess(null);
+    setFile(null);
+    setError("");
+  }
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4">
       {showPaywall && (
@@ -145,6 +155,14 @@ export default function Home() {
               <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 px-3 py-2 rounded-xl">
                 <span>✅</span>
                 <span className="font-medium">{email}</span>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="ml-1 text-gray-400 hover:text-red-400 text-xs transition-colors"
+                  title="Sign out"
+                >
+                  Keluar
+                </button>
               </div>
               {access && (
                 <span className="text-xs text-gray-400">

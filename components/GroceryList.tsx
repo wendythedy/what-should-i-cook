@@ -31,7 +31,7 @@ export default function GroceryList({ recipes, onClose }: Props) {
 
   function handleCopy() {
     const text = Object.entries(grouped)
-      .map(([cat, items]) => `${CATEGORY_LABEL[cat] ?? cat}\n${[...items].map((i) => `- ${i}`).join("\n")}`)
+      .map(([cat, items]) => `${CATEGORY_LABEL[cat] ?? cat}\n${Array.from(items).map((i) => `- ${i}`).join("\n")}`)
       .join("\n\n");
     navigator.clipboard.writeText(text);
   }
@@ -55,7 +55,7 @@ export default function GroceryList({ recipes, onClose }: Props) {
                 {CATEGORY_LABEL[cat] ?? cat}
               </h3>
               <ul className="space-y-1">
-                {[...items].map((item, i) => (
+                {Array.from(items).map((item, i) => (
                   <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
                     <input type="checkbox" className="rounded accent-orange-500" />
                     {item}

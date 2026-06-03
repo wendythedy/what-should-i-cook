@@ -30,7 +30,11 @@ export default function Home() {
     setSendingOtp(true);
     setError("");
     const { error: err } = await supabaseClient.auth.signInWithOtp({
-      email, options: { shouldCreateUser: true },
+      email,
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo: "https://what-should-i-cook-phi.vercel.app",
+      },
     });
     setSendingOtp(false);
     if (err) { setError("Gagal mengirim kode. Coba lagi."); return; }

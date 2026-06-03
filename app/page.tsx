@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabaseClient } from "@/lib/supabase-client";
 import UploadZone from "@/components/UploadZone";
@@ -24,6 +24,23 @@ export default function Home() {
   const [sendingOtp, setSendingOtp] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [error, setError] = useState("");
+
+  // Handle magic link callback — deteksi session dari URL hash
+  useEffect(() => {
+    supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.user?.email && session.access_token) {
+        const userEmail = session.user.email;
+        setEmail(userEmail);
+        setToken(session.access_token);
+        const res = await fetch(`/api/check-access?email=${encodeURIComponent(userEmail)}`);
+        const data = await res.json();
+        setAccess(data);
+        setStep("scan");
+        // Bersihkan hash dari URL
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    });
+  }, []);
 
   async function handleSendOtp(e: React.FormEvent) {
     e.preventDefault();
